@@ -61,4 +61,14 @@ router.put('/:id', validation, async (req, res) => {
     res.status(200).json(managers[managerIndex]);
 });
 
+router.delete('/:id', tokenValidation, async (req, res) => {
+    const id = Number(req.params.id);
+    const managers = await readTalkerManagersFile();
+    const manager = managers.find((t) => t.id === id);
+    const index = managers.indexOf(manager);
+    managers.splice(index, 1);
+    await writeTalkerManagersFile(managers);
+    res.sendStatus(204).end();
+  });
+
 module.exports = router;
