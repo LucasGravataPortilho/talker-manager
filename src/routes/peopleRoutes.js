@@ -16,10 +16,4 @@ router.get('/:id', existingId, async (req, res) => {
     res.status(200).json(manager);
 });
 
-router.post('/login', (req, res) => {
-    const { email, password } = req.body;
-    const getToken = Math.random().toString(16).substring(2);
-    res.status(200).json({ token: getToken });
-});
-
 module.exports = router;
