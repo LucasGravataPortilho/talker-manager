@@ -5,6 +5,7 @@ const { talkValidation, watchedAtValidation,
     rateValidation } = require('../middlewares/talkValidation');
 const tokenValidation = require('../middlewares/tokenValidation');
 const readTalkerManagersFile = require('../readTalkers');
+const searchTalkers = require('../utils/searchTalker');
 const writeTalkerManagersFile = require('../WriteTalkers');
 
 const router = express.Router();
@@ -15,6 +16,12 @@ const validation = [tokenValidation, managerValidation,
 router.get('/', async (_req, res) => {
     const managers = await readTalkerManagersFile();
     res.status(200).json(managers);
+});
+
+router.get('/search', tokenValidation, async (req, res) => {
+    const { q } = req.query;
+    const managerFilter = await searchTalkers(q);
+    res.status(200).json(managerFilter);
 });
 
 router.get('/:id', existingId, async (req, res) => {
