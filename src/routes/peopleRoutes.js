@@ -40,4 +40,25 @@ router.post('/', validation, async (req, res) => {
     res.status(201).json(newManager);
 });
 
+router.put('/:id', validation, async (req, res) => {
+    const { name, age, talk: { watchedAt, rate } } = req.body;
+    const { id } = req.params;
+    const managers = await readTalkerManagersFile();
+    const managerIndex = managers.findIndex((m) => m.id === +id);
+
+    if (managerIndex === -1) {
+        return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+    }
+
+    managers[managerIndex] = {
+        ...managers[managerIndex],
+        name,
+        age,
+        talk: { watchedAt, rate },
+    };
+
+    await writeTalkerManagersFile(managers);
+    res.status(200).json(managers[managerIndex]);
+});
+
 module.exports = router;
