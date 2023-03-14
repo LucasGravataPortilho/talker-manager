@@ -1,7 +1,10 @@
 const express = require('express');
+const peopleRoutes = require('./routes/peopleRoutes');
 
 const app = express();
 app.use(express.json());
+
+app.use('/talker', peopleRoutes);
 
 const HTTP_OK_STATUS = 200;
 const PORT = process.env.PORT || '3001';
